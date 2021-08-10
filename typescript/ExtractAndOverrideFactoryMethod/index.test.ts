@@ -13,7 +13,7 @@ namespace RunTime {
   export class PaymentGatewayTest {
     public regression(): void {
       const paymentGateway = new RunTime.PaymentGateway();
-      paymentGateway.makePayment('Me', 'You', 100, 'AUD');
+      paymentGateway.makePayment('Me', 'You', 100, 'NZD');
       const lodgedPayment = paymentGateway.getLedger().getPayment(0);
 
       Deno.test('must return the payer name', (): void => {
@@ -24,6 +24,9 @@ namespace RunTime {
       });
       Deno.test('must return the cents', (): void => {
         assertEquals(100, lodgedPayment.getCents());
+      });
+      Deno.test('must return the currency', (): void => {
+        assertEquals('NZD', lodgedPayment.getCurrency());
       });
     }
   }

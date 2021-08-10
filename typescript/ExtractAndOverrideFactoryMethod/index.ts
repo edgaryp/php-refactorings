@@ -1,4 +1,5 @@
 export namespace App {
+  export type Currency = 'AUD' | 'NZD';
   class User {
     private name: string;
 
@@ -23,11 +24,13 @@ export namespace App {
     private payer: User;
     private payee: User;
     private cents: number;
+    private currency: Currency;
 
-    constructor(payer: User, payee: User, cents: number) {
+    constructor(payer: User, payee: User, cents: number, currency: Currency) {
       this.payer = payer;
       this.payee = payee;
       this.cents = cents;
+      this.currency = currency;
     }
 
     public getPayer(): User {
@@ -40,6 +43,10 @@ export namespace App {
 
     public getCents(): number {
       return this.cents;
+    }
+
+    public getCurrency(): Currency {
+      return this.currency;
     }
   }
 
@@ -85,10 +92,15 @@ export namespace App {
      * @param {number} cents
      * @memberof PaymentGateway
      */
-    public makePayment(fromName: string, toName: string, cents: number): void {
+    public makePayment(
+      fromName: string,
+      toName: string,
+      cents: number,
+      currency: Currency
+    ): void {
       const fromUser = this.repository.findByName(fromName);
       const toUser = this.repository.findByName(toName);
-      const payment = new Payment(fromUser, toUser, cents);
+      const payment = new Payment(fromUser, toUser, cents, currency);
       this.ledger.lodge(payment);
     }
   }
